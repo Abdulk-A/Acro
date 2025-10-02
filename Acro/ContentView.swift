@@ -6,19 +6,72 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
+    
+    //getting access to where swiftdata stores data - hence modelcontext
+    @Environment(\.modelContext) var modelContext
+    @Query var acronyms: [Acronym]
+    @State private var newAcronym: String = ""
+    @State private var standsFor: String = ""
+    
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            List {
+                ForEach(acronyms) { acronym in
+                    NavigationLink(value: acronym) {
+                        Text(acronym.name)
+                    }
+                }
+            }
+            .navigationTitle("Acro")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(for: Acronym.self) { acroynm in
+                Text(acroynm.name)
+            }
+            
+            VStack {
+                TextField( "Add Acronym", text: $newAcronym)
+                TextField("Add Definition", text: $standsFor)
+            }
+            .padding(.horizontal)
+            
+            Button {
+                if newAcronym.isEmpty { return }
+                if standsFor.isEmpty { return }
+                addAcronym()
+            } label: {
+                Text( "Add Acronym" )
+            }
         }
-        .padding()
     }
+    
+    func addAcronym() {
+        let name = newAcronym.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard !name.isEmpty, !standsFor.isEmpty else { return }
+        
+        if let acroExists = acronyms.first(where: {$0.name == name}) {
+            
+            if !acroExists.definitions.contains(standsFor) {
+                acroExists.definitions.append(standsFor)
+            }
+        }
+        else {
+            let acro = Acronym(name: name, definitions: [standsFor])
+            modelContext.insert(acro)
+        }
+        
+        newAcronym = ""
+        standsFor = ""
+    }
+    
+
 }
 
 #Preview {
     ContentView()
+        .modelContainer(for: Acronym.self, inMemory: true)
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct AcroApp: App {
@@ -13,5 +14,6 @@ struct AcroApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: Acronym.self)
     }
 }
