@@ -8,11 +8,24 @@
 import SwiftUI
 
 struct ListAcronymsView: View {
+    
+    let acronym: Acronym
+    
+    @State private var expanded: Bool = true
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            ForEach(acronym.definitions, id: \.self) { definition in
+                Text(definition)
+                    .font(.caption)
+            }
+        }
+        .padding(.top, 30)
+        Spacer()
+            .navigationTitle(acronym.name)
     }
 }
 
 #Preview {
-    ListAcronymsView()
+    ListAcronymsView(acronym: Acronym(name: "ACME", definitions: ["American Customer Experience Management"]))
 }

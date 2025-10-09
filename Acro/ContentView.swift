@@ -24,19 +24,7 @@ struct ContentView: View {
                     NavigationLink(value: acronym) {
                         HStack {
                             Text(acronym.name)
-                            Spacer()
-                            if acronym.definitions.count > 1 {
-                                VStack {
-                                    ForEach(acronym.definitions, id: \.self) { definition in
-                                        Text(definition)
-                                            .font(.subheadline)
-                                    }
-                                }
-                            }
-                            else {
-                                Text(acronym.definitions.first!)
-                                    .font(.subheadline)
-                            }
+                                .font(.subheadline)
                         }
                     }
                 }
@@ -44,8 +32,7 @@ struct ContentView: View {
             .navigationTitle("Acro")
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: Acronym.self) { acroynm in
-                Text(acroynm.name)
-                
+                ListAcronymsView(acronym: acroynm)
             }
             
             VStack {
