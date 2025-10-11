@@ -56,16 +56,14 @@ struct SlidingDoorView<Content: View>: View {
             HStack {
                 content()
             }
-
-         
-            HStack {
-                //Future conent here perhaps
-            }
-                .frame(width: UIScreen.main.bounds.width, height: height ?? 75.0)
-                .background(.regularMaterial)
-                .padding(.vertical)
-                .animation(.easeInOut(duration: 0.5), value: isOpen)
-                .offset(x: isOpen ? UIScreen.main.bounds.width * 2 : 0)
+            .frame(width: UIScreen.main.bounds.width / 1.2, height: height ?? 75.0)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .foregroundStyle(.regularMaterial)
+            )
+            .padding(.vertical)
+            .animation(.easeInOut(duration: 0.5), value: isOpen)
+            .offset(x: !isOpen ? UIScreen.main.bounds.width * 2 : 0)
         }
     }
 }
