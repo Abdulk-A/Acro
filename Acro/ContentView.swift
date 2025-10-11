@@ -17,6 +17,7 @@ struct ContentView: View {
     @State private var standsFor: String = ""
     
     
+    
     var body: some View {
         NavigationStack {
             List {
@@ -34,6 +35,38 @@ struct ContentView: View {
             .navigationDestination(for: Acronym.self) { acroynm in
                 ListAcronymsView(acronym: acroynm)
             }
+            .toolbar {
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    HStack(spacing: 3) {
+                        Button {
+                            
+                        } label: {
+                            Image(systemName: "plus.circle")
+                                .padding(4)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .fill(.green.opacity(0.3))
+                                )
+                        }
+
+                        
+                        Button {
+                            
+                        } label: {
+                            Image(systemName: "minus.circle")
+                                .padding(4)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .fill(.pink.opacity(0.3))
+                                )
+                        }
+        
+                        
+                    }
+                    .foregroundStyle(.secondary)
+                }
+            }
             
             VStack {
                 TextField( "Add Acronym", text: $newAcronym)
@@ -49,6 +82,7 @@ struct ContentView: View {
                 Text( "Add Acronym" )
             }
         }
+
     }
     
     func addAcronym() {
