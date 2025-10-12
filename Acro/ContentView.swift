@@ -32,8 +32,8 @@ struct ContentView: View {
                     .padding(.horizontal)
                     
                     Button {
-                        addAcronym()
                         withAnimation(.easeInOut(duration: 0.75)) {
+                            addAcronym()
                             showInput.toggle()
                         }
                     
