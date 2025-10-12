@@ -18,6 +18,8 @@ struct ContentView: View {
     
     @State private var showInput = false
     
+    @State private var expandedAcronymID: PersistentIdentifier? = nil
+    
     var body: some View {
         NavigationStack {
             
@@ -54,21 +56,51 @@ struct ContentView: View {
             
             List {
                 ForEach(acronyms) { acronym in
-                    NavigationLink(value: acronym) {
+                    
+                    VStack(alignment: .leading, spacing: 8) {
                         HStack {
                             Text(acronym.name)
                                 .font(.subheadline)
+                                .bold()
+                            Spacer()
+                            
+                            Button {
+                                if expandedAcronymID == acronym.persistentModelID {
+                                    expandedAcronymID = nil
+                                } else {
+                                    expandedAcronymID = acronym.persistentModelID
+                                }
+                            } label: {
+                                Image(systemName: "chevron.down")
+                                    .font(.headline)
+                                    .rotationEffect(.degrees(expandedAcronymID == acronym.persistentModelID ? 180 : 0))
+                                    .animation(.easeInOut(duration: 0.3), value: expandedAcronymID)
+                            }
+                            .buttonStyle(.borderless)
+                            .frame(width: 30, height: 30)
+                            
+                        }
+                        
+                        if expandedAcronymID == acronym.persistentModelID {
+                            ListDefinitionsView(acronym: acronym)
+                        }
+                    }
+                    .animation(.easeInOut(duration: 0.1), value: expandedAcronymID)
+                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button(role: .destructive) {
+                            // action here
+                        } label: {
+                            Label("Delete", systemImage: "trash")
                         }
                     }
                 }
             }
-            .scrollContentBackground(.hidden) 
+            .padding(.bottom)
+            .scrollContentBackground(.hidden)
             .background(Color(.systemGray6))
             .navigationTitle("Acro")
             .navigationBarTitleDisplayMode(.inline)
-            .navigationDestination(for: Acronym.self) { acroynm in
-                ListAcronymsView(acronym: acroynm)
-            }
             .toolbar {
                 
                 ToolbarItem(placement: .topBarTrailing) {
