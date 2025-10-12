@@ -53,17 +53,24 @@ struct SlidingDoorView<Content: View>: View {
     
     var body: some View {
         ZStack {
-            HStack {
-                content()
+            if isOpen {
+                HStack {
+                    content()
+                }
+                .frame(width: UIScreen.main.bounds.width / 1.2, height: height ?? 75.0)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .foregroundStyle(.regularMaterial)
+                )
+                .padding(.vertical)
+                .transition(.asymmetric(
+                    insertion: .move(edge: .trailing),
+                    removal: .move(edge: .trailing)
+                ))
+                
             }
-            .frame(width: UIScreen.main.bounds.width / 1.2, height: height ?? 75.0)
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .foregroundStyle(.regularMaterial)
-            )
-            .padding(.vertical)
-            .animation(.easeInOut(duration: 0.5), value: isOpen)
-            .offset(x: !isOpen ? UIScreen.main.bounds.width * 2 : 0)
         }
+        .animation(.easeInOut(duration: 0.5), value: isOpen)
+        .zIndex(1) 
     }
 }

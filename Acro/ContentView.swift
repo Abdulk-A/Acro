@@ -16,10 +16,42 @@ struct ContentView: View {
     @State private var newAcronym: String = ""
     @State private var standsFor: String = ""
     
-    
+    @State private var showInput = false
     
     var body: some View {
         NavigationStack {
+            
+            
+            SlidingDoorView($showInput) {
+                
+                HStack {
+                    VStack {
+                        TextField( "Add Acronym", text: $newAcronym)
+                        TextField("Add Definition", text: $standsFor)
+                    }
+                    .padding(.horizontal)
+                    
+                    Button {
+                        addAcronym()
+                        withAnimation(.easeInOut(duration: 0.75)) {
+                            showInput.toggle()
+                        }
+                    
+                    } label: {
+                        Text("ADD")
+                            .frame(maxWidth: 50, maxHeight: .infinity)
+                            .padding(.horizontal)
+                            .background(.gray.opacity(0.1))
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .foregroundStyle(.blue.opacity(0.5))
+                            
+                    }
+                    .animation(.easeOut(duration: 1), value: showInput)
+                }
+
+            }
+//            .zIndex(1)
+            
             List {
                 ForEach(acronyms) { acronym in
                     NavigationLink(value: acronym) {
@@ -30,6 +62,8 @@ struct ContentView: View {
                     }
                 }
             }
+            .scrollContentBackground(.hidden) 
+            .background(Color(.systemGray6))
             .navigationTitle("Acro")
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: Acronym.self) { acroynm in
@@ -40,7 +74,9 @@ struct ContentView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack(spacing: 3) {
                         Button {
-                            
+                            withAnimation(.easeInOut(duration: showInput ? 0.75 : 0.2)) {
+                                showInput.toggle()
+                            }
                         } label: {
                             Image(systemName: "plus.circle")
                                 .padding(4)
@@ -67,25 +103,14 @@ struct ContentView: View {
                     .foregroundStyle(.secondary)
                 }
             }
-            
-            VStack {
-                TextField( "Add Acronym", text: $newAcronym)
-                TextField("Add Definition", text: $standsFor)
-            }
-            .padding(.horizontal)
-            
-            Button {
-                if newAcronym.isEmpty { return }
-                if standsFor.isEmpty { return }
-                addAcronym()
-            } label: {
-                Text( "Add Acronym" )
-            }
         }
-
     }
     
     func addAcronym() {
+        
+        if newAcronym.isEmpty { return }
+        if standsFor.isEmpty { return }
+        
         let name = newAcronym.trimmingCharacters(in: .whitespacesAndNewlines)
         
         guard !name.isEmpty, !standsFor.isEmpty else { return }
