@@ -12,7 +12,7 @@ struct ContentView: View {
     
     //getting access to where swiftdata stores data - hence modelcontext
     @Environment(\.modelContext) var modelContext
-    @Query var acronyms: [Acronym]
+    @Query(sort: \Acronym.name) var acronyms: [Acronym]
     @State private var newAcronym: String = ""
     @State private var standsFor: String = ""
     
@@ -32,7 +32,7 @@ struct ContentView: View {
                     .padding(.horizontal)
                     
                     Button {
-                        withAnimation(.easeInOut(duration: 0.75)) {
+                        withAnimation(.easeInOut(duration: 0.4)) {
                             addAcronym()
                             showInput.toggle()
                         }
@@ -74,7 +74,7 @@ struct ContentView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack(spacing: 3) {
                         Button {
-                            withAnimation(.easeInOut(duration: showInput ? 0.75 : 0.2)) {
+                            withAnimation(.easeInOut(duration: 0.4)) {
                                 showInput.toggle()
                             }
                         } label: {
