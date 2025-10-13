@@ -74,7 +74,7 @@ struct ContentView: View {
                                 Image(systemName: "chevron.down")
                                     .font(.headline)
                                     .rotationEffect(.degrees(expandedAcronymID == acronym.persistentModelID ? 180 : 0))
-                                    .animation(.easeInOut(duration: 0.3), value: expandedAcronymID)
+//                                    .animation(.easeInOut(duration: 0.22), value: expandedAcronymID)
                             }
                             .buttonStyle(.borderless)
                             .frame(width: 30, height: 30)
@@ -85,8 +85,8 @@ struct ContentView: View {
                             ListDefinitionsView(acronym: acronym)
                         }
                     }
-                    .animation(.easeInOut(duration: 0.1), value: expandedAcronymID)
                     .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                    .listRowBackground(Color.clear)
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                         Button(role: .destructive) {
                             // action here
@@ -118,18 +118,18 @@ struct ContentView: View {
                                 )
                         }
 
-                        
-                        Button {
-                            
-                        } label: {
-                            Image(systemName: "minus.circle")
-                                .padding(4)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .fill(.pink.opacity(0.3))
-                                )
-                        }
-        
+//                        
+//                        Button {
+//                            
+//                        } label: {
+//                            Image(systemName: "minus.circle")
+//                                .padding(4)
+//                                .background(
+//                                    RoundedRectangle(cornerRadius: 8)
+//                                        .fill(.pink.opacity(0.3))
+//                                )
+//                        }
+//        
                         
                     }
                     .foregroundStyle(.secondary)
