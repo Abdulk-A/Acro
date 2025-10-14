@@ -8,21 +8,21 @@
 import SwiftUI
 
 struct ListDefinitionsView: View {
-    
     let acronym: Acronym
     
     var body: some View {
-        Rectangle()
-            .frame(maxWidth: .infinity, maxHeight: 1)
-            .opacity(0.2)
-            .padding(.bottom, 8)
-        
-        ForEach(acronym.definitions, id: \.self) { definition in
-            Text(definition)
-                .font(.caption)
-                .frame(maxWidth: .infinity, alignment: .leading)
+        VStack(alignment: .leading, spacing: 10) {
+            Divider()
+            
+            ForEach(acronym.definitions, id: \.self) { definition in
+                Text(definition)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .lineLimit(2)
+            }
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, 8)
     }
 }
 

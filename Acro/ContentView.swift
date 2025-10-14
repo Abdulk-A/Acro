@@ -71,10 +71,9 @@ struct ContentView: View {
                                     expandedAcronymID = acronym.persistentModelID
                                 }
                             } label: {
-                                Image(systemName: "chevron.down")
+                                Image(systemName: "chevron.down.circle.fill")
                                     .font(.headline)
                                     .rotationEffect(.degrees(expandedAcronymID == acronym.persistentModelID ? 180 : 0))
-//                                    .animation(.easeInOut(duration: 0.22), value: expandedAcronymID)
                             }
                             .buttonStyle(.borderless)
                             .frame(width: 30, height: 30)
@@ -85,8 +84,18 @@ struct ContentView: View {
                             ListDefinitionsView(acronym: acronym)
                         }
                     }
+                    .padding(4)
+                    
                     .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                    .listRowBackground(Color.clear)
+                    .listRowBackground(expandedAcronymID == acronym.persistentModelID ? Color.secondary.opacity(0.25) : Color.clear)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        if expandedAcronymID == acronym.persistentModelID {
+                            expandedAcronymID = nil
+                        } else {
+                            expandedAcronymID = acronym.persistentModelID
+                        }
+                    }
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                         Button(role: .destructive) {
                             // action here
