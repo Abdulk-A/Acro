@@ -28,8 +28,8 @@ struct ContentView: View {
                 
                 HStack {
                     VStack {
-                        TextField( "Add Acronym", text: $newAcronym)
-                        TextField("Add Definition", text: $standsFor)
+                        TextField( "AAH", text: $newAcronym)
+                        TextField("Add Acronym Here", text: $standsFor)
                     }
                     .padding(.horizontal)
                     
@@ -52,8 +52,6 @@ struct ContentView: View {
                 }
 
             }
-//            .zIndex(1)
-            
             List {
                 ForEach(acronyms) { acronym in
                     
@@ -71,7 +69,7 @@ struct ContentView: View {
                                     expandedAcronymID = acronym.persistentModelID
                                 }
                             } label: {
-                                Image(systemName: "chevron.down.circle.fill")
+                                Image(systemName: expandedAcronymID == acronym.persistentModelID ? "" : "chevron.down.circle.fill")
                                     .font(.headline)
                                     .rotationEffect(.degrees(expandedAcronymID == acronym.persistentModelID ? 180 : 0))
                             }
@@ -98,12 +96,13 @@ struct ContentView: View {
                     }
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                         Button(role: .destructive) {
-                            // action here
+                            
                         } label: {
                             Label("Delete", systemImage: "trash")
                         }
                     }
                 }
+                .onDelete(perform: deleteAcronym)
             }
             .padding(.bottom)
             .scrollContentBackground(.hidden)
@@ -126,25 +125,19 @@ struct ContentView: View {
                                         .fill(.green.opacity(0.3))
                                 )
                         }
-
-//                        
-//                        Button {
-//                            
-//                        } label: {
-//                            Image(systemName: "minus.circle")
-//                                .padding(4)
-//                                .background(
-//                                    RoundedRectangle(cornerRadius: 8)
-//                                        .fill(.pink.opacity(0.3))
-//                                )
-//                        }
-//        
-                        
                     }
                     .foregroundStyle(.secondary)
                 }
             }
         }
+    }
+    
+    func deleteAcronym(_ indexSet: IndexSet) {
+        for index in indexSet {
+            let acronym = acronyms[index]
+            modelContext.delete(acronym)
+        }
+        try? modelContext.save()
     }
     
     func addAcronym() {
@@ -170,8 +163,6 @@ struct ContentView: View {
         newAcronym = ""
         standsFor = ""
     }
-    
-
 }
 
 #Preview {
