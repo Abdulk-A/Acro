@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct ListDefinitionsView: View {
-    let acronym: Acronym
+    @Bindable var viewModel: ListDefinitionsViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Divider()
             
-            ForEach(acronym.definitions, id: \.self) { definition in
+            ForEach(viewModel.acronym.definitions, id: \.self) { definition in
                 Text(definition)
                     .font(.subheadline)
                     .foregroundColor(.secondary)
@@ -27,5 +27,9 @@ struct ListDefinitionsView: View {
 }
 
 #Preview {
-    ListDefinitionsView(acronym: Acronym(name: "AA", definitions: ["A A"]))
+    ListDefinitionsView(
+        viewModel: ListDefinitionsViewModel(
+            acronym: Acronym(name: "AA", definitions: ["A A"])
+        )
+    )
 }

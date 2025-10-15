@@ -12,7 +12,7 @@ import SwiftData
 struct AcroApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView()
         }
         .modelContainer(for: Acronym.self)
     }

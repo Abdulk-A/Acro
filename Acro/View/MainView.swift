@@ -1,0 +1,88 @@
+//
+//  ContentView.swift
+//  Acro
+//
+//  Created by Abdullah on 10/2/25.
+//
+
+import SwiftUI
+import SwiftData
+
+struct MainView: View {
+    
+    //getting access to where swiftdata stores data - hence modelcontext
+    @Environment(\.modelContext) var modelContext
+    @Query(sort: \Acronym.name) var acronyms: [Acronym]
+    @State private var newAcronym: String = ""
+    @State private var standsFor: String = ""
+    
+    @State private var showInput = false
+    
+    @State private var expandedAcronymID: PersistentIdentifier? = nil
+    
+    var body: some View {
+        NavigationStack {
+            
+            
+            SlidingDoorView($showInput) {
+                
+                HStack {
+                    VStack {
+                        TextField( "AAH", text: $newAcronym)
+                        TextField("Add Acronym Here", text: $standsFor)
+                    }
+                    .padding(.horizontal)
+                    
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.4)) {
+                            addAcronym()
+                            showInput.toggle()
+                        }
+                    
+                    } label: {
+                        Text("ADD")
+                            .frame(maxWidth: 50, maxHeight: .infinity)
+                            .padding(.horizontal)
+                            .background(.gray.opacity(0.1))
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .foregroundStyle(.blue.opacity(0.5))
+                            
+                    }
+                    .animation(.easeOut(duration: 1), value: showInput)
+                }
+
+            }
+            
+            ListAcronymsView(showInput: $showInput)
+        }
+    }
+
+    func addAcronym() {
+        
+        if newAcronym.isEmpty { return }
+        if standsFor.isEmpty { return }
+        
+        let name = newAcronym.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard !name.isEmpty, !standsFor.isEmpty else { return }
+        
+        if let acroExists = acronyms.first(where: {$0.name == name}) {
+            
+            if !acroExists.definitions.contains(standsFor) {
+                acroExists.definitions.append(standsFor)
+            }
+        }
+        else {
+            let acro = Acronym(name: name, definitions: [standsFor])
+            modelContext.insert(acro)
+        }
+        
+        newAcronym = ""
+        standsFor = ""
+    }
+}
+
+#Preview {
+    MainView()
+        .modelContainer(for: Acronym.self, inMemory: true)
+}

@@ -7,35 +7,6 @@
 
 import SwiftUI
 
-//struct SlidingDoorView: View {
-//    
-//    @State private var isOpen = true
-//    let height: CGFloat?
-//    
-//    var body: some View {
-//        ZStack {
-//            HStack {
-//
-//            }
-//
-//         
-//            HStack {
-//                //Future conent here perhaps
-//            }
-//                .frame(width: UIScreen.main.bounds.width, height: height ?? 75.0)
-//                .background(.regularMaterial)
-//                .padding(.vertical)
-//                .animation(.easeInOut(duration: 0.5), value: isOpen)
-//                .offset(x: isOpen ? UIScreen.main.bounds.width * 2 : 0)
-//        }
-//    }
-//}
-//
-//#Preview {
-//    SlidingDoorView(height: nil)
-//}
-
-
 struct SlidingDoorView<Content: View>: View {
     
     
@@ -48,9 +19,7 @@ struct SlidingDoorView<Content: View>: View {
         self.content = content
         self.height = height
     }
-    
-
-    
+        
     var body: some View {
         ZStack {
             if isOpen {
@@ -74,3 +43,4 @@ struct SlidingDoorView<Content: View>: View {
         .zIndex(1) 
     }
 }
+
