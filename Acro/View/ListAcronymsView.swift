@@ -82,12 +82,13 @@ struct ListAcronymsView: View {
                             showInput.toggle()
                         }
                     } label: {
-                        Image(systemName: "plus.circle")
+                        Image(systemName: "plus")
                             .padding(4)
                             .background(
                                 RoundedRectangle(cornerRadius: 8)
                                     .fill(.green.opacity(0.3))
                             )
+                            .font(.footnote)
                     }
                 }
                 .foregroundStyle(.secondary)

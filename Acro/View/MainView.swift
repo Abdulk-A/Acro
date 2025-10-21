@@ -28,8 +28,8 @@ struct MainView: View {
                 
                 HStack {
                     VStack {
-                        TextField( "AAH", text: $newAcronym)
-                        TextField("Add Acronym Here", text: $standsFor)
+                        TextField( "AA", text: $newAcronym)
+                        TextField("Add Acronym", text: $standsFor)
                     }
                     .padding(.horizontal)
                     
