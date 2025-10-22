@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ListDefinitionsView: View {
     @Bindable var viewModel: ListDefinitionsViewModel
-    @Environment(\.modelContext) var modelContext
+    
     
     @State private var editingIndex: Int? = nil
     @State private var editedText: String = ""
@@ -18,18 +18,9 @@ struct ListDefinitionsView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Divider()
-            
             ForEach(Array(viewModel.acronym.definitions.enumerated()), id: \.offset) { index, definition in
-                
                 if editingIndex == index {
-                    TextField("Definition", text: $editedText)
-                        .textFieldStyle(.roundedBorder)
-                        .onSubmit {
-                            saveEdit(at: index)
-                        }
-                        .onDisappear {
-                            saveEdit(at: index)
-                        }
+                    EditDefinitionView(viewModel: viewModel, editedText: $editedText, editingIndex: $editingIndex, index: index)
                 } else {
                     Text(definition)
                         .font(.subheadline)
@@ -44,15 +35,6 @@ struct ListDefinitionsView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 8)
-    }
-    
-    func saveEdit(at index: Int) {
-        guard editingIndex == index else { return }
-        
-        viewModel.acronym.definitions[index] = editedText
-        editingIndex = nil
-        
-        try? modelContext.save()
     }
 }
 
