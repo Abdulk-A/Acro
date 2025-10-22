@@ -60,7 +60,9 @@ struct ListAcronymsView: View {
                 }
                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                     Button(role: .destructive) {
-                        
+                        if let index = acronyms.firstIndex(of: acronym) {
+                            modelContext.delete(acronyms[index])
+                        }
                     } label: {
                         Label("Delete", systemImage: "trash")
                     }
