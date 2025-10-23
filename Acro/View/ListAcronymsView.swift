@@ -49,7 +49,7 @@ struct ListAcronymsView: View {
                 .padding(4)
                 
                 .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                .listRowBackground(expandedAcronymID == acronym.persistentModelID ? Color.secondary.opacity(0.25) : Color.clear)
+                .listRowBackground(expandedAcronymID == acronym.persistentModelID ? Color(red: 0.424, green: 0.388, blue: 1).opacity(0.25) : Color.clear)
                 .contentShape(Rectangle())
                 .onTapGesture {
                     if expandedAcronymID == acronym.persistentModelID {
@@ -88,7 +88,7 @@ struct ListAcronymsView: View {
                             .padding(4)
                             .background(
                                 RoundedRectangle(cornerRadius: 8)
-                                    .fill(.green.opacity(0.3))
+                                    .fill(Color(red: 0.424, green: 0.388, blue: 1).opacity(0.3))
                             )
                             .font(.footnote)
                     }
